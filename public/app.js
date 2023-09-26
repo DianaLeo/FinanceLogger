@@ -30,22 +30,14 @@ const list = new ListTemplate(ul);
 form.addEventListener('submit', (e) => {
     e.preventDefault();
     let doc;
+    let inputs;
+    inputs = [toFrom.value, details.value, amount.valueAsNumber];
     if (type.value === 'invoice') {
-        doc = new Invoice(toFrom.value, details.value, amount.valueAsNumber);
+        doc = new Invoice(...inputs);
     }
     else {
-        doc = new Payments(toFrom.value, details.value, amount.valueAsNumber);
+        doc = new Payments(...inputs);
     }
     console.log(doc);
     list.render(doc, type.value, 'end');
 });
-const docThree = {
-    uid: 1,
-    resourseName: 'person',
-    data: { name: 'diana' }
-};
-const docFour = {
-    uid: 1,
-    resourseName: 'shopping list',
-    data: ['milk', 'egg', 'tissue']
-};

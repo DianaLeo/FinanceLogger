@@ -247,7 +247,7 @@ Just be careful, when importing, file extension **.js** has to be given explicit
 
 
 ## 9. Interfaces
-### Since interfaces are only for declaration, we still have to implement them. why we need them?
+### Since interfaces are only for declaration, and we still have to implement them, why do we need them?
 Interfaces definition is good for writing standardized code. In the scenario of big project, team architect is responsible for interfaces definition, or cleaning some uneccessary interfaces. The aim is to demonstrate a clear and simplified instruction on which business logics need to be implemented. Meanwhile, it can prevent naming problem and code cluttering.
 
 ### Interface definition
@@ -270,7 +270,7 @@ class Payments implements HasFormatter {
     }
 }
 ```
-### Use Interfaces as a Type
+### Using Interfaces as Types
 ```
 let docOne:HasFormatter;
 let docTwo:HasFormatter;
@@ -341,8 +341,64 @@ const docFour: Resource<string[]>={
 
 ## 11. Enums
 
+```
+enum ResourceType { BOOK, AUTHOR, FILM, DIRECTOR, PERSON};
 
+interface Resource<T>{
+    uid: number,
+    resourseType:ResourceType,
+    data:T
+}
+
+const docThree: Resource<object>={
+    uid: 1,
+    resourseType:ResourceType.BOOK,
+    data:{title:'gone with the wind'}
+}
+const docFour: Resource<object>={
+    uid: 1,
+    resourseType:ResourceType.PERSON,
+    data:{name:'diana',age:30}
+}
+
+```
+In console.log, ```ResourceType.BOOK``` is a number.
 
 
 
 ## 12. Tuples
+
+The type of the data in each position in a tuple is fixed once it is initialized.
+```
+let arr = ['string', 30,true];
+arr[0]=false;//allowed
+arr[1]='a string';//allowed
+arr = [20, 'yes',20];//allowed
+
+let tup:[string, number, boolean]=['hello',40,true];
+tup[0] = false;//error
+```
+
+Now we can modify the form submit handeler to this:
+```
+let inputs = [toFrom.value, details.value, amount.valueAsNumber];
+
+if(type.value==='invoice'){
+    doc = new Invoice(...inputs);//error
+}else{
+    doc = new Payments(toFrom.value, details.value, amount.valueAsNumber)
+}
+```
+However, compiler doesn't know the type of **inputs**. It only knows ```let inputs: (string|number)[]```
+It doesn't know the type on each position.
+If we want to reuse the code, we have to use **tuple**.
+```
+let inputs:[string,string,number];
+inputs = [toFrom.value, details.value, amount.valueAsNumber];
+
+if(type.value==='invoice'){
+    doc = new Invoice(...inputs)
+}else{
+    doc = new Payments(...inputs)
+}
+```
