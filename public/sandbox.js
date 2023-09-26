@@ -1,0 +1,2 @@
+var ninjaOne;
+ninjaOne.values();
